@@ -3,25 +3,40 @@ ctx=canvas.getContext("2d");
 
 color= "pink";
 
-ctx.beginPath();
-ctx.strokeStyle= color;
-ctx.lineWidth= 5;
-ctx.arc(200,300,80,0,2*Math.PI);
-ctx.stroke();
-console.log("code successful");
+var mouse_event="empty";
 
-canvas.addEventlistener("mousedown", mymouse_down);
+var last_position_x,last_position_y;
+
+width_of_line=1;
+
+canvas.addEventListener("mousedown", mymouse_down);
 
 function mymouse_down(e){
-    mouse_x=e.clientX-canvas.offsetLeft;
-mouse_y=e.clientY-canvas.offsetTop;
-console.log("X="+ mouse_x +"and Y="+ mouse_y);
-circle(mouse_x,mouse_y);
+    mouse_event="mousedown";
 }
-function circle(mouse_x,mouse_y){
+
+canvas.addEventListener("mouseup", mymouse_up);
+
+function mymouse_up(e){
+    mouse_event=" ";
+}
+
+canvas.addEventListener("mousemove", mymouse_move);
+
+function mymouse_move(e){
+    current_position_mouse_x=e.clientX-canvas.offsetLeft;
+    current_position_mouse_y=e.clientY-canvas.offsetTop;
+
+if (mouse_event=="mousedown"){
     ctx.beginPath();
-    ctx.strokeStyle= color;
-    ctx.lineWidth= 5;
-    ctx.arc(mouse_x,mouse_y,58,0,2*Math.PI);
-    ctx.stroke();
+ctx.strokeStyle= color;
+ctx.lineWidth= 1;
+ctx.moveTo(last_position_x,last_position_y);
+ctx.lineTo(current_position_mouse_x,current_position_mouse_y);
+ctx.stroke();
+console.log("code successful");
 }
+last_position_x= current_position_mouse_x;
+last_position_y= current_position_mouse_y;
+}
+
